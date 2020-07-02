@@ -14,4 +14,4 @@ This is a simpler version of the board game battleship using Vue.js .In this cas
 ## Still in the process/ unable to complete
 - Game has trouble updating variable changes if those are made inside the component
 - Game is not able to show boats sunk a different color
-- Game does not display is user won or lost
+- Game does not display if user won or lost
