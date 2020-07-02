@@ -2,6 +2,10 @@
 
 >Made by Andrea Villegas Mayorga
 
+## On this repo
+1. Battleship game in root folder
+2. Vue Excercises in Vue Excercises Folder
+
 ## Overview
 
 This is a simpler version of the board game battleship using Vue.js .In this case the user will be playing agasinst the computer and will attempt to sink the computers boats. 
