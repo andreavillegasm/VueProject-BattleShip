@@ -4,7 +4,7 @@
 
 ## On this repo
 1. Battleship game in root folder
-2. Vue Excercises in Vue Excercises Folder
+2. Vue Excercises in VueExcercises folder
 
 ## Overview
 
