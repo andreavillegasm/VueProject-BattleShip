@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Battle Ship</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+</head>
+<!-- VISUAL LOGIC -->
+<body>
+    <div id="app">
+        <!-- All elements of the application live here -->
+        <h1 class="title">{{title}}</h1>
+        <p class="instructions">{{instructions}}</p>
+
+        <!-- Creating Board -->
+        <!-- If the game has not started show this button-->
+        <div class="button-container">
+            <button v-if="!gameStarted" v-on:click="placeboats();" class="btn btn-info">Start Game!</button>
+            <button v-if="gameStarted" v-on:click="resetboats();" class="btn btn-danger">End Game</button>
+        </div>
+
+        <div class="player-container">
+
+            <!--The Player's Board -->
+            <div class="board">
+
+                <div v-for="row in board" class="row-m" v-if="gameStarted">
+                    <board
+                            v-for="tile in row"
+                            v-bind:state="tile.state"
+                            v-bind:boat="tile.boat"
+                            v-bind:color="tile.color"
+                            v-bind:key="tile.id">
+
+                    </board>
+                </div>
+            </div>
+
+            <!-- The Player's Boats -->
+            <!--<div class="boats-container">
+                <boats
+                    v-for="boat in boats"
+                    v-bind:spaces="boat.spaces"
+                    v-bind:color="boat.color"
+                    v-bind:width="boat.width"
+                    v-bind:key="boat.id">
+                </boats>
+            </div>-->
+        </div>
+
+    </div>
+
+<!-- SCRIPT LOGIC-->
+    <script>
+        //DECLARING THE ARRAY THAT HOLDS ALL THE TILES
+        var tiles =  new Array(10);
+
+        // Loop to create 2D array using 1D array
+        for (var i = 0; i < tiles.length; i++) {
+            tiles[i] = new Array(10);
+        }
+
+        //Function to fill in the tiles
+        fillboard();
+
+        console.log(tiles);
+
+        //FUNCTIONS
+
+        //Function to receive the array and fill it with the object properties of the tile
+        function fillboard(){
+            var count = 0;
+            for(var x = 0; x < tiles.length; x++){
+                for(var y = 0; y < tiles[x].length; y++ ){
+
+                    //states can be 0-empty, 1-boat, 2-hit
+                    //Boat key holds the boat number that is at that position
+                    tiles[x][y] = {id:count, state:0, boat:0, color: '#00B1D2FF'};
+                    //console.log(tiles[x][y]);
+                    count++;
+
+                }
+            }
+
+        }
+
+
+        //VUE.JS PART
+        Vue.component('boats',{
+            props:['spaces','color','width'],
+            template:
+                `<div
+                    v-bind:class="'boat-style'"
+			        v-bind:style="{'width':width+'px', 'height':'50px'}">
+		        </div>`,
+
+        });
+
+        Vue.component('board',{
+            props:['state','boat', 'color',],
+            template:
+                `<div
+                    v-bind:class="'tile'"
+			        v-bind:style="{'background-color':color}"
+			        v-on:click="hit();">
+		        </div>`,
+            methods:{
+                hit:function(){
+                    //alert("I am here");
+                    //console.log(this.state);
+                    if(this.state === 0){
+                        //alert('You missed there is no boat on that location');
+                        this.color = 'white';
+                        //hit an empty one becomes state 3
+                        this.state = 3;
+                        console.log("the tile state has changed to "+ this.state);
+                        console.log ("The first tile is "+ app.board[0][0].state);
+                    } else if(this.state === 1){
+                        //check that one as hit
+                        this.state = 2;
+                        console.log("the tile state has changed to "+ this.state);
+                        alert('You hit a boat!');
+                        this.color = '#964F4CFF';
+                        //console.log(this.boat);
+                        this.updateboat(this.boat);
+                        //Check what boat is in there and bring down the spaces by 1
+                    }
+                },
+                //Receives the boat number and loop though the array of boats lower the amount of positions
+                //active for that boat
+                updateboat: function(boatn){
+                    console.log("I am here!");
+                    for(b = 0; b < app.boats.length; b++){
+                        //if the boat sent is the same as this one
+                        if(boatn === app.boats[b].id){
+                            //lower the amount of spaces
+                            app.boats[b].spaces = app.boats[b].spaces - 1;
+                            console.log("Boat has been updated");
+                            console.log(app.boats[b].spaces);
+                            //if the boat has no spaces available change the state to 2 which is sunk
+                            if(app.boats[b].spaces === 0){
+
+                                //Make the state of the boat 2 to represent the boat sunk
+                                app.boats[b].state = 2;
+                                //send that boat and make all of their tiles a different color
+                                console.log('boat sunk ' + app.boats[b].id );
+                                //this.displaysunk(app.boats[b].id);
+                                alert("You have sunk a boat!");
+                                //console.log(app.$data.boats);
+                                console.log(app.board);
+                            }
+
+                        }
+                    }
+
+                },
+                //Recieves the id of the boat and displays all the tiles with that boat as gray
+                displaysunk: function(boatn){
+                    //console.log(boat);
+                    console.log('Attempting to display sunk boat');
+                    console.log(app.boats);
+                    //Get all the tiles that have that boat id gray
+                    //Loop through all the board
+                    for(var x = 0; x < app.board.length; x++){
+                        //console.log('inside loop one');
+                        for(var y = 0; y < app.board[x].length; y++ ){
+                            //console.log('inside loop two');
+                            //console.log(app.$data.board[x][y].boat);
+                            if(app.board[x][y].boat === boatn){
+                                console.log('Showing the state of the sunk tiles');
+                                console.log(app.board[x][y].state);
+                                app.board[x][y].color = '#808080';
+                            }
+
+                        }
+                    }
+                    console.log(app.board);
+
+                }
+            }
+
+        });
+
+        var app = new Vue({
+        //Where do we want the data to live? in this case the div with the id app
+            el: '#app',
+            data:{
+                title: 'Welcome to battle field',
+                instructions: 'This is a one player game where you will be playing against the computer.' +
+                    ' Once you click start the computer will place its boats on the board and you have to try and sink their boats by clicking on the tiles. ' +
+                    'When you sink all 5 boats, you win!! But be careful, you only have 30 moves so choose where you hit carefully. ' +
+                    'Good Luck and lets sink some ships!',
+                gameStarted: false,
+                board: tiles,
+                boats: [
+                    {id:1, spaces:5,  state:0, width: 100},
+                    {id:2, spaces:4,  state:0, width: 150},
+                    {id:3, spaces:3,  state: 0, width: 150},
+                    {id:4, spaces:3,  state:0, width: 200},
+                    {id:5, spaces:2,  state:0, width: 250},
+                ],
+
+
+            },
+            methods:{
+                //Functions to position all the boats in a computer click
+                placeboats:function(){
+
+                    this.gameStarted = true;
+                    this.instructions = 'The computer has placed its  boats make your hit! If you hit a boat the tile will become red, if not it will become white';
+
+                    //Loop through the array of boats
+                    for(var b = 0; b < this.boats.length; b++){
+                        this.placeboat(this.boats[b]);
+                    }
+                },
+                //Function receives a boat and places it on the board
+                placeboat:function(boat) {
+
+                    //Get how many spaces does that boat have
+                    var positions = boat.spaces;
+                    var boatnum = boat.id;
+                    console.log("Boat number"+ boatnum);
+
+                    //Generate a random x and y for the first tile
+                    var x = Math.floor(Math.random() * 9);
+                    var y= Math.floor(Math.random() * 9);
+
+                    //While the position is occupied keep assigning random numbers
+                    while (this.board[x][y].state === 1){
+                        //generate another x and y
+                        x = Math.floor(Math.random() * 9);
+                        y= Math.floor(Math.random() * 9);
+                    }
+
+                    //Once out of the while place first space of boat on that position
+                    this.board[x][y].state = 1;
+                    this.board[x][y].boat = boatnum;
+                    console.log(this.board[x][y].boat);
+
+
+                    //assign a random value between 1 and 2 (1 = Horizontal Positioning, 2 = Vertical Positioning)
+                    var side = Math.floor((Math.random() * 2)+1);
+                    //console.log(side);
+
+                    //Variable to check if positions near are empty
+                    var empty;
+
+                    //If the side is 1 try and place the boat horizontally
+                    if(side === 1){
+
+                        console.log("positioning boat "+boat.id +" horizontally in position "+ x + " "+ y);
+
+                        //Is there enough spaces to place the boat horizontally?
+                        if(9 - y >= positions-1){
+
+                            //Are the spaces all empty?
+                            empty = this.checkemptyh(x,y, positions);
+
+                            //If the spots are empty populate them
+                            if(empty === true){
+                                console.log("positioning ...");
+                                for(var e = 1; e < positions; e++){
+                                    this.board[x][y+e].state = 1;
+                                    this.board[x][y+e].boat = boatnum;
+                                }
+                            }else {
+                                //restart the original tile
+                                console.log("attempting to place again");
+                                this.board[x][y].state = 0;
+                                this.board[x][y].boat = 0;
+
+                                //try to place the boat again
+                                this.placeboat(boat);
+                            }
+
+                        //If there are not enough spaces to place the boat..
+                        }else{
+
+                            //restart the original tile
+                            console.log("attempting to place again");
+                            this.board[x][y].state = 0;
+                            this.board[x][y].boat = 0;
+
+                            //try to place the boat again
+                            this.placeboat(boat);
+
+                        }
+
+                    // if it is 2 try and place the boat vertically
+                    } else if(side === 2){
+
+                        console.log("positioning boat "+boat.id +" vertically in position "+ x + " "+ y);
+                        //Is there enough space to place the boat vertically?
+                        if(9 - x >= positions-1){
+
+                            //Are the spaces all empty?
+                            empty = this.checkemptyv(x,y, positions);
+
+                            //If the spots are empty populate them
+                            if(empty === true){
+                                console.log("positioning..");
+                                for(var v = 1; v < positions; v++){
+                                    this.board[x+v][y].state = 1;
+                                    this.board[x+v][y].boat = boatnum;
+                                }
+                            } else{
+                                //restart the original tile
+                                console.log("attempting to place again");
+                                this.board[x][y].state = 0;
+                                this.board[x][y].boat = 0;
+
+                                //try and place the boat again
+                                this.placeboat(boat);
+                            }
+
+
+                        } else{
+                            //If there is not enough spaces restart the tile
+                            console.log("attempting to place again");
+                            this.board[x][y].state = 0;
+                            this.board[x][y].boat = 0;
+
+                            //try and place the boat again
+                            this.placeboat(boat);
+                        }
+
+                    }
+
+                    //IF THE BOAT HAS BEEN POPULATED WITH NO PROBLEM MAKE IT AN ACTIVE BOAT THEN
+                    boat.state = 1;
+
+
+                },
+                //Functions checks if the positions next to the boat horizontally are empty
+                //Receives the starting position in x and y  and the spaces
+                //Moves along side the y value
+                checkemptyh:function(x, y, spaces) {
+                    var empty  = true;
+                    for(var i = 1; i < spaces; i++){
+                        if(this.board[x][y+i].state === 1){
+                            empty = false;
+                            break;
+                        }
+
+                    }
+                    return empty;
+
+                },
+
+                //Receives the starting position in x and y  and the spaces
+                //Moves along side the x
+                checkemptyv:function(x, y, spaces) {
+                    var empty  = true;
+                    for(var i = 1; i < spaces; i++){
+                        if(this.board[x+i][y].state === 1){
+                            empty = false;
+                            break;
+                        }
+
+                    }
+                    return empty;
+
+                },
+                resetboats: function () {
+                    //The game is no longer on
+                    this.gameStarted = false;
+                    app.instructions = 'This is a one player game where you will be playing against the computer.' +
+                    ' Once you click start the computer will place its boats on the board and you have to try and sink their boats by clicking on the tiles. ' +
+                    'When you sink all 5 boats, you win!! But be careful, you only have 30 moves so choose where you hit carefully. ' +
+                    'Good Luck and lets sink some ships!';
+
+                    //Put everything back to 0 in the board
+                    console.log('restarting board');
+                    for(var x = 0; x < app.board.length; x++){
+                        //console.log('inside loop one');
+                        for(var y = 0; y < app.board[x].length; y++ ){
+                            app.board[x][y].state = 0;
+                            app.board[x][y].boat = 0;
+                            app.board[x][y].color ='#00B1D2FF';
+                            console.log(app.board[x][y]);
+                        }
+                    }
+
+                    //Make the boats 0 again
+                    app.boats = [
+                        {id:1, spaces:5,  state:0, width: 100},
+                        {id:2, spaces:4,  state:0, width: 150},
+                        {id:3, spaces:3,  state: 0, width: 150},
+                        {id:4, spaces:3,  state:0, width: 200},
+                        {id:5, spaces:2,  state:0, width: 250},
+                    ];
+                    console.log("restaring boats");
+                    console.log(app.boats);
+
+
+                }
+
+            }
+        });
+
+       console.log ("The first tile is "+ app.board[0][0].state);
+
+
+
+
+    </script>
+
+</body>
+</html>

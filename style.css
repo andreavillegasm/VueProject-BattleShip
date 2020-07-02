@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Jura:wght@700&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+h1.title{
+    font-family: 'Jura', sans-serif;
+    text-align: center;
+    color:midnightblue;
+}
+p.instructions{
+    margin-top:1em;
+    margin-bottom: 1em;
+    margin-left:10em;
+    margin-right: 10em;
+    font-size: 18px;
+    text-align: center;
+}
+
+/* Board*/
+
+.player-container{
+    display: flex;
+}
+.board, .boats-container{
+    /*flex:10%;*/
+    margin-left:30%;
+    margin-top: 2em;
+}
+
+/* Create three equal columns that floats next to each other */
+.tile {
+    float: left;
+    width: 50px;
+    height: 50px;
+    border: black 1px solid;
+}
+.tile-empty-hit{
+    float: left;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: darkslateblue;
+    border: black 1px solid;
+}
+
+/* Clear floats after the columns */
+.row-m{
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    width:500px;
+
+}
+.boat-style{
+    background-color: dimgray;
+    border:1px solid #ccc;
+    display:block;
+    margin: 2em;
+
+}
+/* Button style */
+.button-container{
+    text-align: center;
+}
+.end{
+    background-color: indianred;
+}
+.start{
+    background-color: cadetblue;
+}
