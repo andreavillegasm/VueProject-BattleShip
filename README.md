@@ -8,7 +8,7 @@
 
 ## Overview
 
-This is a simpler version of the board game battleship using Vue.js .In this case the user will be playing agasinst the computer and will attempt to sink the computers boats. 
+This is a simpler version of the board game battleship using Vue.js .In this case the user will be playing against the computer and will attempt to sink the computers boats. 
 
 ## Sources Referenced
  Vuejs.org - https://vuejs.org/v2/guide/components.html - accessed Friday June 19th
