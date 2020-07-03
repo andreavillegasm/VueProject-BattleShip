@@ -100,7 +100,7 @@
         });
 
         Vue.component('board',{
-            props:['state','boat', 'color',],
+            props:['state','boat', 'color'],
             template:
                 `<div
                     v-bind:class="'tile'"
@@ -116,6 +116,7 @@
                         this.color = 'white';
                         //hit an empty one becomes state 3
                         this.state = 3;
+                        console.log(this.state);
                         console.log("the tile state has changed to "+ this.state);
                         console.log ("The first tile is "+ app.board[0][0].state);
                     } else if(this.state === 1){
@@ -149,8 +150,15 @@
                                 console.log('boat sunk ' + app.boats[b].id );
                                 //this.displaysunk(app.boats[b].id);
                                 alert("You have sunk a boat!");
-                                //console.log(app.$data.boats);
-                                console.log(app.board);
+                                //Count the amount of boats sunk
+                                app.countboats = app.countboats + 1;
+                                console.log("boats sunk "+ app.countboats);
+
+                                if(app.countboats === 5){
+                                    //If all the 5 boats are sunk let the user they have won
+                                    app.instructions = "Congratulations!!You won the game!! Want to play again?";
+                                    app.gameStarted = false;
+                                }
                             }
 
                         }
@@ -172,7 +180,7 @@
                             if(app.board[x][y].boat === boatn){
                                 console.log('Showing the state of the sunk tiles');
                                 console.log(app.board[x][y].state);
-                                app.board[x][y].color = '#808080';
+                                        //app.board[x][y].color = '#808080';
                             }
 
                         }
@@ -193,6 +201,7 @@
                     ' Once you click start the computer will place its boats on the board and you have to try and sink their boats by clicking on the tiles. ' +
                     'When you sink all 5 boats, you win!! But be careful, you only have 30 moves so choose where you hit carefully. ' +
                     'Good Luck and lets sink some ships!',
+                countboats: 0,
                 gameStarted: false,
                 board: tiles,
                 boats: [
