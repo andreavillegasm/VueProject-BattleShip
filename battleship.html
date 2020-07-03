@@ -88,6 +88,11 @@
 
 
         //VUE.JS PART
+        //REFERENCED SOURCES
+        //Vuejs.org - https://vuejs.org/v2/guide/components.html - accessed Friday June 19th
+        //Christine Bittle vue excercises - https://github.com/christinebittle/vuepractice - accessed Friday June 19th
+
+        //Create a component with binding like vue excercise in Christine's excercises
         Vue.component('boats',{
             props:['spaces','color','width'],
             template:
@@ -107,6 +112,7 @@
 			        v-on:click="hit();">
 		        </div>`,
             methods:{
+                //Hit function similar to the one in circle excercise vue.js
                 hit:function(){
                     //alert("I am here");
                     //console.log(this.state);
@@ -129,6 +135,7 @@
                         //Check what boat is in there and bring down the spaces by 1
                     }
                 },
+                //ORIGINAL WORK
                 //Receives the boat number and loop though the array of boats lower the amount of positions
                 //active for that boat
                 updateboat: function(boatn){
@@ -165,6 +172,7 @@
                     }
 
                 },
+                //ORIGINAL WORK
                 //THIS FUNCTION CURRENTLY DOES NOT FULLY WORK, IT RESTARTS ALL TILES TO BLUE
                 //Recieves the id of the boat and displays all the tiles with that boat as gray
                 displaysunk: function(boatn){
@@ -193,6 +201,7 @@
 
         });
 
+        //START REFERENCED FROM VUE JS EXCERCISES BY CHRISTINE BITTLE
         var app = new Vue({
         //Where do we want the data to live? in this case the div with the id app
             el: '#app',
@@ -216,6 +225,7 @@
 
             },
             methods:{
+                //ORIGINAL FUNCTION
                 //Functions to position all the boats in a computer click
                 placeboats:function(){
 
@@ -227,6 +237,7 @@
                         this.placeboat(this.boats[b]);
                     }
                 },
+                //ORIGINAL FUNCTION
                 //Function receives a boat and places it on the board
                 placeboat:function(boat) {
 
@@ -345,6 +356,7 @@
 
 
                 },
+                //ORIGINAL FUNCTION
                 //Functions checks if the positions next to the boat horizontally are empty
                 //Receives the starting position in x and y  and the spaces
                 //Moves along side the y value
@@ -361,6 +373,7 @@
 
                 },
 
+                //ORIGINAL FUNCTION
                 //Receives the starting position in x and y  and the spaces
                 //Moves along side the x
                 checkemptyv:function(x, y, spaces) {
@@ -375,6 +388,7 @@
                     return empty;
 
                 },
+                //ORIGINAL FUNCTION
                 resetboats: function () {
                     //The game is no longer on
                     this.gameStarted = false;
