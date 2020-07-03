@@ -12,6 +12,7 @@ This is a simpler version of the board game battleship using Vue.js .In this cas
 
 ## Sources Referenced
  Vuejs.org - https://vuejs.org/v2/guide/components.html - accessed Friday June 19th
+ 
  Christine Bittle vue excercises - https://github.com/christinebittle/vuepractice - accessed Friday June 19th
 
 ## Things Accomplished
