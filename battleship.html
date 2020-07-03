@@ -23,11 +23,10 @@
         </div>
 
         <div class="player-container">
-
             <!--The Player's Board -->
-            <div class="board">
+            <div class="board" v-if="gameStarted">
 
-                <div v-for="row in board" class="row-m" v-if="gameStarted">
+                <div v-for="row in board" class="row-m">
                     <board
                             v-for="tile in row"
                             v-bind:state="tile.state"
@@ -150,13 +149,14 @@
                                 console.log('boat sunk ' + app.boats[b].id );
                                 //this.displaysunk(app.boats[b].id);
                                 alert("You have sunk a boat!");
-                                //Count the amount of boats sunk
-                                app.countboats = app.countboats + 1;
-                                console.log("boats sunk "+ app.countboats);
 
-                                if(app.countboats === 5){
+                                //Count the amount of boats sunk
+                                app.countBoats = app.countBoats + 1;
+                                console.log("boats sunk "+ app.countBoats);
+
+                                if(app.countBoats === 5){
                                     //If all the 5 boats are sunk let the user they have won
-                                    app.instructions = "Congratulations!!You won the game!! Want to play again?";
+                                    app.instructions = "Congratulations!! You won the game!! Want to play again?";
                                     app.gameStarted = false;
                                 }
                             }
@@ -165,6 +165,7 @@
                     }
 
                 },
+                //THIS FUNCTION CURRENTLY DOES NOT FULLY WORK, IT RESTARTS ALL TILES TO BLUE
                 //Recieves the id of the boat and displays all the tiles with that boat as gray
                 displaysunk: function(boatn){
                     //console.log(boat);
@@ -201,7 +202,7 @@
                     ' Once you click start the computer will place its boats on the board and you have to try and sink their boats by clicking on the tiles. ' +
                     'When you sink all 5 boats, you win!! But be careful, you only have 30 moves so choose where you hit carefully. ' +
                     'Good Luck and lets sink some ships!',
-                countboats: 0,
+                countBoats: 0,
                 gameStarted: false,
                 board: tiles,
                 boats: [
