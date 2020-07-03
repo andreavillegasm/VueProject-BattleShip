@@ -11,7 +11,8 @@
 This is a simpler version of the board game battleship using Vue.js .In this case the user will be playing agasinst the computer and will attempt to sink the computers boats. 
 
 ## Sources Referenced
- https://vuejs.org/v2/guide/components.html to get started with using components
+ Vuejs.org - https://vuejs.org/v2/guide/components.html - accessed Friday June 19th
+ Christine Bittle vue excercises - https://github.com/christinebittle/vuepractice - accessed Friday June 19th
 
 ## Things Accomplished
 - Game can populate the board with random boats for the computer
